@@ -1,0 +1,6 @@
+{
+	"script": "index.js",
+	"watch": true,
+	"ignore_watch": ["db.json", "node_modules"],
+	"name": "cringebot"
+}

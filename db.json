@@ -2,9 +2,37 @@
   "users": {
     "132399256525864961": {
       "level": 2,
-      "xp": 232,
-      "msSinceLastXp": 1595212020404,
-      "nextLevelXp": 295
+      "xp": 275,
+      "msSinceLastXp": 1595228063589,
+      "nextLevelXp": 295,
+      "id": "132399256525864961"
+    },
+    "706034378270048288": {
+      "level": 0,
+      "xp": 85,
+      "nextLevelXp": 100,
+      "msSinceLastXp": 1595225776056,
+      "id": "706034378270048288"
+    },
+    "179447175812612096": {
+      "level": 0,
+      "xp": 40,
+      "nextLevelXp": 100,
+      "msSinceLastXp": 1595228075540,
+      "id": {
+        "id": "179447175812612096",
+        "bot": false,
+        "username": "Bkamp",
+        "discriminator": "8271",
+        "avatar": "f9998cdbf184427fe4477528b5a349c5",
+        "flags": 0,
+        "lastMessageChannelID": "734370054933839913",
+        "createdTimestamp": 1462853940681,
+        "defaultAvatarURL": "https://cdn.discordapp.com/embed/avatars/1.png",
+        "tag": "Bkamp#8271",
+        "avatarURL": "https://cdn.discordapp.com/avatars/179447175812612096/f9998cdbf184427fe4477528b5a349c5.webp",
+        "displayAvatarURL": "https://cdn.discordapp.com/avatars/179447175812612096/f9998cdbf184427fe4477528b5a349c5.webp"
+      }
     }
   }
 }

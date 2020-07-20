@@ -10,7 +10,7 @@ module.exports = {
 		.setThumbnail(message.author.displayAvatarURL())
 		.addFields(
 			{ name: "Level", value: `${dbUser.get("level").value()}` },
-			{ name: "XP", value: `${dbUser.get("xp").value()}` }
+			{ name: "XP", value: `${dbUser.get("xp").value()} **/** ${dbUser.get("nextLevelXp").value()}` }
 		)
 		.setTimestamp()
 

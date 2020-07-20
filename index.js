@@ -24,13 +24,18 @@ for (const file of commandFiles) {
 }
 
 client.on('message', message => {
-	if (!message.content.startsWith(prefix) || message.author.bot || message.channel != "734371349358837782" ) {
-		// Level calculation on each message
+	if(message.author.bot) return;
+	// Level calculation on each message
+	if (db.get("users").get(message.author).value() == undefined) {
 		var dbUser = db.get("users").get(message.author)
-		if (dbUser == undefined) {
-			db.get("users").push(`${message.author}: ["level": 0, "xp": 0, nextLevelXp: 100]`)
-		}
+		console.log("dbuser is undefined")
+		db.get("users")
+		.set(message.author, { "level": 0, "xp": 20, nextLevelXp: 100, msSinceLastXp: 1595223500000, id: message.author })
+		.write()
+		return;
+	}
 
+	if (!message.content.startsWith(prefix) || message.channel != "734371349358837782" ) {	
 		// Re-establish updated user
 		dbUser = db.get("users").get(message.author)
 
