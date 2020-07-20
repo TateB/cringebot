@@ -1,10 +1,10 @@
 {
   "users": {
     "132399256525864961": {
-      "level": 1,
-      "xp": 120,
-      "msSinceLastXp": 1595170565028,
-      "nextLevelXp": 165
+      "level": 2,
+      "xp": 232,
+      "msSinceLastXp": 1595212020404,
+      "nextLevelXp": 295
     }
   }
 }

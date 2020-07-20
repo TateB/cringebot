@@ -47,9 +47,13 @@ client.on('message', message => {
 		// If nextLevelXp == currentXp, levelup
 		if (dbUser.get("xp").value() >= dbUser.get("nextLevelXp").value()) {
 			dbUser.update("level", n => n+1 ).write()
-			let currentNewLevel = dbUser.get("level").value()
+			var currentNewLevel = dbUser.get("level").value()
 			client.channels.cache.get("734422195203211287").send(`${message.author.username} has reached level **${currentNewLevel}**`)
-			dbUser.set("nextLevelXp", (5*(currentNewLevel ^ 2) + 50 * currentNewLevel + 100)).write()
+			
+			currentNewLevel = currentNewLevel+1
+			let newXp = 5*(Math.pow(currentNewLevel, 2)) + 50 * currentNewLevel + 100
+			console.log(newXp, currentNewLevel)
+			dbUser.set("nextLevelXp", newXp).write()
 		}
 
 		return
