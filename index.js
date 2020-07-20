@@ -13,15 +13,20 @@ client.commands = new Discord.Collection();
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
+// React to message function
+function reactToMessage(client, channelId, messageId, emojiReaction) {
+	client.guilds.cache.get('734343453051453460').channels.cache.get(channelId).messages.fetch(messageId).then( e => 
+		e.react(emojiReaction)
+	)
+}
+
 
 client.once('ready', () => {
 	console.log('Ready!');
-	client.guilds.cache.get('734343453051453460').channels.cache.get('734346523969585202').messages.fetch('734362546466979881').then( e => 
-		e.react('\uD83D\uDFE9')
-	)
-	client.guilds.cache.get('734343453051453460').channels.cache.get('734346523969585202').messages.fetch('734362546466979881').then( e => 
-		e.react('\uD83D\uDFE5')
-	)
+	reactToMessage(client, "734346523969585202", "734362546466979881", '\uD83D\uDFE9')
+	reactToMessage(client, "734346523969585202", "734362546466979881", '\uD83D\uDFE5')
+	reactToMessage(client, "734346592873742426", "734365412409737317", '1️⃣')
+	reactToMessage(client, "734346592873742426", "734365412409737317", '2️⃣')
 });
 
 for (const file of commandFiles) {
@@ -29,24 +34,51 @@ for (const file of commandFiles) {
 	client.commands.set(command.name, command);
 }
 
+// Actual function for adding roles
+function addRole(message, reaction, user, roleid) {
+	message.guild.members.fetch(user.id).then(member => {
+		reaction.users.remove(user.id)
+		member.roles.add(roleid);
+	});
+}
+
 // Role adder function
 client.on('messageReactionAdd', (reaction, user) => {
-		let message = reaction.message, emoji = reaction.emoji;
+	let message = reaction.message, emoji = reaction.emoji;
 	if (user.id == client.user.id) return
-	if (message.id !== "734362546466979881") return
-        if (emoji.name == '🟩') {
-                console.log("adding role")
-		message.guild.members.fetch(user.id).then(member => {
-                        member.roles.add('734356952011767810');
-                });
-        } else if (emoji.name == '🟥') {
-                message.guild.members.fetch(user.id).then(member => {
-                        member.kick();
-                });
-        }
 
-		// Remove the user's reaction
-		reaction.users.remove(user.id)
+	switch(message.id) {
+		case "734362546466979881":
+			switch(emoji.name) {
+				case '🟩':
+					addRole(message, reaction, user, "734356952011767810")
+					break;
+				case '🟥':
+					message.guild.members.fetch(user.id).then(member => {
+						reaction.users.remove(user.id)
+						member.kick();
+					});
+					break;
+				default:
+					break;
+			}
+			break;
+		case "734365412409737317":
+			switch(emoji.name) {
+				case '1️⃣':
+					addRole(message, reaction, user, "734366871092068363")
+					break;
+				case '2️⃣':
+					addRole(message, reaction, user, "734366905317457920")
+					break;
+				default:
+					break;
+			}
+			break;
+		default:
+			break;
+	}
+	
 });
 
 
