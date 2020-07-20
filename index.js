@@ -18,6 +18,8 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 
 client.once('ready', () => {
 	console.log('Ready!');
+
+	// Add reactions to messages
 	reactions.addReactions(client)
 });
 
@@ -26,12 +28,15 @@ for (const file of commandFiles) {
 	client.commands.set(command.name, command);
 }
 
+// Add listener for giving roles from reactions
 reactions.giveRoles(client)
 
-
 client.on('message', message => {
+
+	// Cancel instruction if author is invalid or bot
 	if(message.author.bot) return;
 	if(message.author.username == undefined) return
+
 	// Level calculation on each message
 	levelling.levelsListener(client, db, message, prefix)
 
@@ -44,7 +49,7 @@ client.on('message', message => {
 		client.commands.get(command).execute(message, args, db);
 	} catch (error) {
 		console.error(error);
-		message.reply('there was an error trying to execute that command!');
+		message.reply('there was an error trying to execute that command');
 	}
 });
 
