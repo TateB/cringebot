@@ -10,7 +10,7 @@ module.exports = {
 		const leaderboardEmbed = new Discord.MessageEmbed()
 		.setColor('#FFA500')
 		.setTitle("sector:cringe leaderboard")
-		.setAuthor("sector:cringe", message.guild.iconURL())
+		.setThumbnail(message.guild.iconURL())
 		var counter = 1 
 		db.get("users").sortBy("xp").take(5).value().reverse().forEach(e => {
 			var username = message.client.users.cache.get(e.id)
@@ -21,7 +21,7 @@ module.exports = {
 			}
 
 			
-			leaderboardEmbed.addField(`**${counter}**. @${username}`, `**xp**: ${e.xp}, **level**, ${e.level}`, false)	
+			leaderboardEmbed.addField(`**${counter}**. @${username}`, `**level**: ${e.level}, **xp**: ${e.xp}`, false)	
 			counter++
 		})
 
