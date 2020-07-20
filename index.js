@@ -25,12 +25,13 @@ for (const file of commandFiles) {
 
 client.on('message', message => {
 	if(message.author.bot) return;
+	if(message.author.username == undefined) return
 	// Level calculation on each message
 	if (db.get("users").get(message.author).value() == undefined) {
 		var dbUser = db.get("users").get(message.author)
 		console.log("dbuser is undefined")
 		db.get("users")
-		.set(message.author, { "level": 0, "xp": 20, nextLevelXp: 100, msSinceLastXp: 1595223500000, id: message.author })
+		.set(message.author, { "level": 0, "xp": 20, nextLevelXp: 100, msSinceLastXp: 1595223500000, id: message.author.id })
 		.write()
 		return;
 	}
