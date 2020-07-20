@@ -15,13 +15,40 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 
 
 client.once('ready', () => {
-		console.log('Ready!');
+	console.log('Ready!');
+	client.guilds.cache.get('734343453051453460').channels.cache.get('734346523969585202').messages.fetch('734362546466979881').then( e => 
+		e.react('\uD83D\uDFE9')
+	)
+	client.guilds.cache.get('734343453051453460').channels.cache.get('734346523969585202').messages.fetch('734362546466979881').then( e => 
+		e.react('\uD83D\uDFE5')
+	)
 });
 
 for (const file of commandFiles) {
 	const command = require(`./commands/${file}`);
 	client.commands.set(command.name, command);
 }
+
+// Role adder function
+client.on('messageReactionAdd', (reaction, user) => {
+		let message = reaction.message, emoji = reaction.emoji;
+	if (user.id == client.user.id) return
+	if (message.id !== "734362546466979881") return
+        if (emoji.name == '🟩') {
+                console.log("adding role")
+		message.guild.members.fetch(user.id).then(member => {
+                        member.roles.add('734356952011767810');
+                });
+        } else if (emoji.name == '🟥') {
+                message.guild.members.fetch(user.id).then(member => {
+                        member.kick();
+                });
+        }
+
+		// Remove the user's reaction
+		reaction.users.remove(user.id)
+});
+
 
 client.on('message', message => {
 	if(message.author.bot) return;
