@@ -1,6 +1,7 @@
 const Discord = require('discord.js')
 const social = require('../commands/social')
 
+// Create social embed function creates the embed in about-you channel and saves message id 
 function createSocialEmbed(db, message) {
 
     const socialEmbed = new Discord.MessageEmbed()
@@ -26,6 +27,7 @@ function createSocialEmbed(db, message) {
 
 }
 
+// Update social embed function edits the saved embed to add new usernames from db
 function updateSocialEmbed(db, message) {
     const socialEmbed = new Discord.MessageEmbed()
         .setColor('#FFA500')
@@ -50,6 +52,7 @@ function updateSocialEmbed(db, message) {
     })
 }
 
+// Create social profile function creates the database entry, as well as running createSocialEmbed
 function createSocialProfile(db, message) {
     if (db.get(`users.${message.author.id}.socials.messageId`).value() !== undefined) {
         return "social profile already exists"
@@ -64,6 +67,8 @@ function createSocialProfile(db, message) {
     return "social profile created"
 }
 
+
+// Add social name function updates the database entries, as well as running updateSocialEmbed
 function addSocialName(db, message, args) {
     if (db.get(`users.${message.author.id}.socials`) == undefined) {
         return "please create a social profile first"
