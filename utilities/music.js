@@ -1,0 +1,8 @@
+
+function createMusicInterface() {
+    
+}
+
+module.exports = {
+
+}
