@@ -63,6 +63,10 @@ function updateNowPlaying(db, client, distube, song, queue) {
         .then(() => m.react('⏸️'))
         .then(() => m.react('⏩'))
         .then(() => m.react('🛑'))
+        .then(() => m.react('🔀'))
+        .then(() => m.react('🔂'))
+        .then(() => m.react('🔁'))
+        .then(() => m.react('⛔'))
     })
 }
 
@@ -167,6 +171,10 @@ function distubeReactionListener(db, client, distube) {
                         .then(() => reaction.message.react('▶️'))
                         .then(() => reaction.message.react('⏩'))
                         .then(() => reaction.message.react('🛑'))
+                        .then(() => reaction.message.react('🔀'))
+                        .then(() => reaction.message.react('🔂'))
+                        .then(() => reaction.message.react('🔁'))
+                        .then(() => reaction.message.react('⛔'))
                         break
                     case '▶️':
                         distube.resume(reaction.message)
@@ -174,9 +182,25 @@ function distubeReactionListener(db, client, distube) {
                         .then(() => reaction.message.react('⏸️'))
                         .then(() => reaction.message.react('⏩'))
                         .then(() => reaction.message.react('🛑'))
+                        .then(() => reaction.message.react('🔀'))
+                        .then(() => reaction.message.react('🔂'))
+                        .then(() => reaction.message.react('🔁'))
+                        .then(() => reaction.message.react('⛔'))
                         break
                     case '⏩':
                         distube.skip(reaction.message)
+                        break
+                    case '🔀':
+                        distube.shuffle(reaction.message)
+                        break
+                    case '🔂':
+                        distube.setRepeatMode(reaction.message, 1)
+                        break
+                    case '🔁':
+                        distube.setRepeatMode(reaction.message, 2)
+                        break
+                    case '⛔':
+                        distube.setRepeatMode(reaction.message, 0)
                         break
                     case '🛑':
                         distube.stop(reaction.message)
@@ -185,10 +209,6 @@ function distubeReactionListener(db, client, distube) {
                         .setTitle("music")
                         .setColor("#FFA500")
                         .setDescription("currently disconnected")
-                        reaction.message.edit(newMusicEmbed).then(m => {
-                            m.react('🔗')
-                        })
-
                         break
                     default:
                         break
