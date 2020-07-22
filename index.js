@@ -1,5 +1,6 @@
 const fs = require('fs');
 const Discord = require('discord.js');
+const DisTube = require('distube')
 
 const low = require("lowdb")
 const FileSync = require("lowdb/adapters/FileSync")
@@ -10,9 +11,11 @@ const { prefix, token } = require('./config.json');
 
 const client = new Discord.Client();
 client.commands = new Discord.Collection();
+const distube = new DisTube(client, { searchSongs: true, emitNewSongOnly: true });
 
 const reactions = require('./utilities/reactions.js')
 const levelling = require('./utilities/levelling.js')
+const music = require('./utilities/music.js')
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
@@ -21,6 +24,9 @@ client.once('ready', () => {
 
 	// Add reactions to messages
 	reactions.addReactions(client)
+
+	// Music utility action
+	music.initialiseMusicInterface(db, client)
 });
 
 for (const file of commandFiles) {
@@ -30,6 +36,12 @@ for (const file of commandFiles) {
 
 // Add listener for giving roles from reactions
 reactions.giveRoles(client)
+
+// Add listener for music reactions
+music.distubeReactionListener(db, client, distube)
+
+// Add listener for distube events
+music.distubeEventHandler(db, distube, client)
 
 client.on('message', message => {
 
@@ -46,7 +58,7 @@ client.on('message', message => {
 	if (!client.commands.has(command)) return;
 
 	try {
-		client.commands.get(command).execute(message, args, db);
+		client.commands.get(command).execute(message, args, db, distube);
 	} catch (error) {
 		console.error(error);
 		message.reply('there was an error trying to execute that command');
