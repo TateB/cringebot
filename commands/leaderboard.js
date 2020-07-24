@@ -12,7 +12,7 @@ module.exports = {
 		.setTitle("sector:cringe leaderboard")
 		.setThumbnail(message.guild.iconURL())
 		var counter = 1 
-		db.get("users").sortBy("xp").take(5).value().reverse().forEach(e => {
+		db.get("users").orderBy("xp", "desc").take(5).value().forEach(e => {
 			var username = message.client.users.cache.get(e.id)
 			if (username == undefined) {
 				return
