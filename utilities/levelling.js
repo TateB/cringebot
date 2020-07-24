@@ -1,3 +1,10 @@
+function addLevelRole(message, currentNewLevel) {
+	let newRole = message.guild.roles.find(role => role.name === `level ${currentNewLevel}`)
+	if (newRole != undefined) {
+		message.author.roles.add(newRole)
+	}
+}
+
 function levelsListener(client, db, message, prefix) {
     if (db.get("users").get(message.author).value() == undefined) {
 		var dbUser = db.get("users").get(message.author)
@@ -27,9 +34,11 @@ function levelsListener(client, db, message, prefix) {
 			dbUser.update("level", n => n+1 ).write()
 			var currentNewLevel = dbUser.get("level").value()
 			client.channels.cache.get("734422195203211287").send(`${message.author.username} has reached level **${currentNewLevel}**`)
+
+			addLevelRole(message, currentNewLevel)
 			
 			currentNewLevel = currentNewLevel+1
-			let newXp = 5*(Math.pow(currentNewLevel, 2)) + 50 * currentNewLevel + 100
+			let newXp = 10*(Math.pow(currentNewLevel, 2)) + 50 * currentNewLevel + 100
 			console.log(newXp, currentNewLevel)
 			dbUser.set("nextLevelXp", newXp).write()
 		}
