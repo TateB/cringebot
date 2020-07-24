@@ -21,6 +21,7 @@ const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('
 
 client.once('ready', () => {
 	console.log('Ready!');
+	client.user.setActivity('the collapse of the world economy', { type: 'WATCHING' })
 
 	// Add reactions to messages
 	reactions.addReactions(client)
