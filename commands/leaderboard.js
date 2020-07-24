@@ -21,7 +21,7 @@ module.exports = {
 			}
 
 			
-			leaderboardEmbed.addField(`**${counter}**. @${username}`, `**level**: ${e.level}, **xp**: ${e.xp}`, false)	
+			leaderboardEmbed.addField(`**${counter}**. @${username}`, `**level**: ${e.level}, **xp**: ${e.xp}/${e.nextLevelXp}`, false)	
 			counter++
 		})
 
