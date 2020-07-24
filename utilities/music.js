@@ -161,6 +161,7 @@ function distubeReactionListener(db, client, distube) {
         let musicIds = db.get('music.currentMessageIds').value()
 
         if (user.id == client.user.id) return
+        if (message.id != musicIds.musicUi && message.id != musicIds.queueUi) return
 
         switch(message.id) {
             case musicIds.musicUi:
