@@ -3,7 +3,7 @@ function addLevelRole(message, currentNewLevel) {
 	let newRole = message.guild.roles.cache.find(role => role.name === `level ${currentNewLevel}`)
 	console.log(newRole)
 	if (newRole != undefined) {
-		message.author.roles.add(newRole)
+		message.member.roles.add(newRole)
 	}
 }
 
