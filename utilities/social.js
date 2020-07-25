@@ -74,7 +74,9 @@ function addSocialName(db, message, args) {
         return "please create a social profile first"
     }
 
-    if (args[0] == "name" || args[0] == "snapchat" || args[0] == "instagram" || args[0] == "steam" || args[0] == "youtube" || args[0] == "twitch" || args[0] == "github") {
+    const social = args[0].toLowerCase(); //QoL improvement
+    
+    if (social == "name" || social == "snapchat" || social == "instagram" || social == "steam" || social == "youtube" || social == "twitch" || social == "github" || social == "twitter" || social == "krunker" || social == "valorant") {
         db.get(`users.${message.author.id}.socials`)
             .set(`${args[0]}`, `${args[1]}`)
             .write()
