@@ -2,8 +2,8 @@ const https = require('https');
 
 module.exports = {
 	name: 'jeopardy',
-	description: 'Ding!',
-	usage: '!ding',
+	description: 'gives you jeopardy question/answers',
+	usage: '!jeopardy <answer>',
 	execute(message, args, db) {
 
         if (!args.length) {

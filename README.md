@@ -12,6 +12,12 @@ _bot help command, shows all available commands_
 ### !help [command]
 shows help for a specific command
 
+## !jeopardy
+_jeopardy mini game, gives jeopardy category and question for you to answer_
+
+### !jeopardy [answer]
+displays if your answer is correct or incorrect
+
 ## !leaderboard
 _shows leaderboard for the entire server_
 
