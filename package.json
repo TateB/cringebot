@@ -1,6 +1,6 @@
 {
   "name": "cringebot",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "the ultimate cringe bot",
   "main": "index.js",
   "scripts": {
