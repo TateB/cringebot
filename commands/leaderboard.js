@@ -26,8 +26,6 @@ module.exports = {
 			counter++
 		})
 
-		
-		console.log(db.get("users").sortBy("xp").value())
 		message.channel.send(leaderboardEmbed)
 	},
 };

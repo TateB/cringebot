@@ -39,15 +39,11 @@ function updateSocialEmbed(db, message) {
 
     for (var socialProfile in socialProfiles) {
         if (socialProfile == "messageId" || socialProfiles[socialProfile] == "") {
-            console.log('no field found') 
         } else {
-            console.log(`field found for ${socialProfile}, ${socialProfiles[socialProfile]}`)
             socialEmbed.addField(`${socialProfile}`, `${socialProfiles[socialProfile]}`, true)
         }
     }
     message.client.channels.cache.get("734348142111096893").messages.fetch(currentMessageId).then( m => {
-        console.log(currentMessageId)
-        console.log(`found message ${m.id}`)
         m.edit(socialEmbed)
     })
 }
