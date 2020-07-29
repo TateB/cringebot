@@ -2,7 +2,8 @@ const Discord = require('discord.js')
 
 module.exports = {
 	name: 'source',
-	description: 'Provides the source code for the bot',
+	description: 'provides the source code for the bot',
+	usage: '!source',
 	execute(message, args) {
 		const sourceEmbed = new Discord.MessageEmbed()
 		.setColor('#FFA500')

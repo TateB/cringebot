@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
 	name: 'leaderboard',
 	description: "Gets the server's leaderboard",
+	usage: '!leaderboard',
 	execute(message, args, db) {
 		let dbUser = db.get("users").get(message.author)
 		

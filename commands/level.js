@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
 	name: 'level',
 	description: "Gets the user's level",
+	usage: '!level <usage>',
 	execute(message, args, db) {
 		var specifiedUser = message.author
 
