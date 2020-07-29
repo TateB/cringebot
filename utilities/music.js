@@ -240,7 +240,6 @@ function distubeCommandHandler(message, args, distube) {
     switch(command) {
         case "play":
             distube.play(message, args.join(" "));
-            message.channel.send("correct command")
             break;
         default:
             message.channel.send("invalid music command")
