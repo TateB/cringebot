@@ -31,7 +31,7 @@ module.exports = {
             });
         } else {
             let answer = db.get('trivia.lastQuestionAnswer').value()
-            if(answer.toLowerCase() == args.join(" ")) {
+            if(answer.toLowerCase() == args.join(" ").toLowerCase()) {
                 message.channel.send('Correct!')
             } else {
                 message.channel.send(`Incorrect. The answer was **${answer}**`)
