@@ -2,7 +2,7 @@
 const Discord = require('discord.js');
 
 
-function createMusicInterface(db, client, distube) {
+function createMusicInterface(db, client, alias) {
     let musicDb = db.get('music')
     var amountQueued = 0
     var firstPageQueued = 0
@@ -26,19 +26,19 @@ function createMusicInterface(db, client, distube) {
         queueEmbed.setDescription('no songs currently in queue')
         queueEmbed.setFooter(`showing 0/0`)
 
-    client.guilds.cache.get('734343453051453460').channels.cache.get('735436844224872540').send(musicEmbed).then(m => {
+    client.guilds.cache.get(alias.serverID).channels.cache.get(alias.music).send(musicEmbed).then(m => {
         musicDb.get('currentMessageIds')
             .set('musicUi', m.id)
             .write()
     })
-    client.guilds.cache.get('734343453051453460').channels.cache.get('735436844224872540').send(queueEmbed).then(m => {
+    client.guilds.cache.get(alias.serverID).channels.cache.get(alias.music).send(queueEmbed).then(m => {
         musicDb.get('currentMessageIds')
             .set('queueUi', m.id)
             .write()
     })
 }
 
-function updateNowPlaying(db, client, distube, song, queue) {
+function updateNowPlaying(db, client, distube, song, queue, alias) {
     let musicIds = db.get('music.currentMessageIds').value()
     var upnextSong
     if(queue.songs.length > 1) {
@@ -57,7 +57,7 @@ function updateNowPlaying(db, client, distube, song, queue) {
         .setThumbnail(`${queue.songs[0].thumbnail}`)
         .addField("up next", `${upnextSong}`)
 
-    client.guilds.cache.get('734343453051453460').channels.cache.get('735436844224872540').messages.fetch(musicIds.musicUi).then( m => {
+    client.guilds.cache.get(alias.serverID).channels.cache.get(alias.music).messages.fetch(musicIds.musicUi).then( m => {
         m.edit(musicEmbed)
         m.reactions.removeAll()
         .then(() => m.react('⏸️'))
@@ -70,7 +70,7 @@ function updateNowPlaying(db, client, distube, song, queue) {
     })
 }
 
-function updateQueue(db, client, queue) {
+function updateQueue(db, client, queue, alias) {
     let musicIds = db.get('music.currentMessageIds').value()
     let currentPage = db.get('music.currentPage').value()
     let totalPages = Math.ceil(queue.songs.length / 5)
@@ -102,29 +102,29 @@ function updateQueue(db, client, queue) {
         console.log(queue.songs.length)
 
         if (currentPage == 1 && totalSongs == 1) {
-            client.guilds.cache.get('734343453051453460').channels.cache.get('735436844224872540').messages.fetch(musicIds.queueUi).then(m => {
+            client.guilds.cache.get(alias.serverID).channels.cache.get(alias.music).messages.fetch(musicIds.queueUi).then(m => {
                 m.reactions.removeAll()
             })
         } else if (queue.songs.length > currentPage*5) {
             if (currentPage == 1) {
-                client.guilds.cache.get('734343453051453460').channels.cache.get('735436844224872540').messages.fetch(musicIds.queueUi).then(m => {
+                client.guilds.cache.get(alias.serverID).channels.cache.get(alias.music).messages.fetch(musicIds.queueUi).then(m => {
                     m.reactions.removeAll()
                     .then(() => m.react('⬇️'))
                 })
             } else if (totalPages > currentPage) {
-                client.guilds.cache.get('734343453051453460').channels.cache.get('735436844224872540').messages.fetch(musicIds.queueUi).then(m => {
+                client.guilds.cache.get(alias.serverID).channels.cache.get(alias.music).messages.fetch(musicIds.queueUi).then(m => {
                     m.reactions.removeAll()
                     .then(() => m.react('⬆️'))
                     .then(() => m.react('⬇️'))
                 })
             } else {
-                client.guilds.cache.get('734343453051453460').channels.cache.get('735436844224872540').messages.fetch(musicIds.queueUi).then(m => {
+                client.guilds.cache.get(alias.serverID).channels.cache.get(alias.music).messages.fetch(musicIds.queueUi).then(m => {
                     m.reactions.removeAll()
                     .then(() => m.react('⬆️'))
                 })
             }
         } else {
-            client.guilds.cache.get('734343453051453460').channels.cache.get('735436844224872540').messages.fetch(musicIds.queueUi).then(m => {
+            client.guilds.cache.get(alias.serverID).channels.cache.get(alias.music).messages.fetch(musicIds.queueUi).then(m => {
                 m.reactions.removeAll()
                 .then(() => m.react('⬆️'))
             })
@@ -133,7 +133,7 @@ function updateQueue(db, client, queue) {
         queueEmbed.setDescription(desc)
         queueEmbed.setFooter(`showing ${currentPage}/${totalPages}`)
 
-        client.guilds.cache.get('734343453051453460').channels.cache.get('735436844224872540').messages.fetch(musicIds.queueUi).then(m => {
+        client.guilds.cache.get(alias.serverID).channels.cache.get(alias.music).messages.fetch(musicIds.queueUi).then(m => {
             m.edit(queueEmbed)
         })
     }
@@ -143,15 +143,15 @@ function updateQueue(db, client, queue) {
 
 }
 
-function clearMusicChannel(client) {
-    client.guilds.cache.get('734343453051453460').channels.cache.get('735436844224872540').bulkDelete(5, true).catch( err => {
+function clearMusicChannel(client, alias) {
+    client.guilds.cache.get(alias.serverID).channels.cache.get(alias.music).bulkDelete(5, true).catch( err => {
         console.log(`there was an error trying to clear the music channel`)
     })
 }
 
-function initialiseMusicInterface(db, client) {
-    clearMusicChannel(client)
-    createMusicInterface(db,client)
+function initialiseMusicInterface(db, client, alias) {
+    clearMusicChannel(client, alias);
+    createMusicInterface(db, client, alias);
 }
 
 function distubeReactionListener(db, client, distube) {
@@ -248,24 +248,24 @@ function distubeCommandHandler(message, args, distube) {
         
 }
 
-function distubeEventHandler(db, distube, client) {
+function distubeEventHandler(db, distube, client, alias) {
     distube
     .on("playSong", (message, queue, song) => {
-        updateNowPlaying(db, client, distube, song, queue)
-        updateQueue(db, client, queue)
+        updateNowPlaying(db, client, distube, song, queue, alias)
+        updateQueue(db, client, queue, alias)
     })
     .on("addSong", (message, queue, song) => {
         message.channel.send(`Added ${song.name} - \`${song.formattedDuration}\` to the queue by ${song.user}`)
-        updateNowPlaying(db, client, distube, song, queue)
-        updateQueue(db, client, queue)
+        updateNowPlaying(db, client, distube, song, queue, alias)
+        updateQueue(db, client, queue, alias)
     })
     .on("playList", (message, queue, playlist, song) => {
-        updateNowPlaying(db, client, distube, song, queue)
-        updateQueue(db, client, queue)
+        updateNowPlaying(db, client, distube, song, queue, alias)
+        updateQueue(db, client, queue, alias)
         message.channel.send(`Play ${playlist.title} playlist (${playlist.total_items} songs).\nRequested by: ${song.user}\nNow playing ${song.name} - ${song.formattedDuration}`)
     })
     .on("addList", (message, queue, playlist) => {
-        updateQueue(db, client, queue)
+        updateQueue(db, client, queue, alias)
         message.channel.send(`Added ${playlist.title} playlist (${playlist.total_items} songs) to queue`)
     })
     // DisTubeOptions.searchSongs = true

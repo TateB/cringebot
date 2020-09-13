@@ -7,7 +7,7 @@ function addLevelRole(message, currentNewLevel) {
 	}
 }
 
-function levelsListener(client, db, message, prefix) {
+function levelsListener(client, db, message, prefix, alias) {
     if (db.get("users").get(message.author).value() == undefined) {
 		var dbUser = db.get("users").get(message.author)
 		console.log("dbuser is undefined")
@@ -17,7 +17,7 @@ function levelsListener(client, db, message, prefix) {
 		return;
 	}
 
-	if (!message.content.startsWith(prefix) || message.channel != "734371349358837782" ) {	
+	if (!message.content.startsWith(prefix) || message.channel != alias.botCommand ) {	
 		// Re-establish updated user
 		dbUser = db.get("users").get(message.author)
 
@@ -35,7 +35,7 @@ function levelsListener(client, db, message, prefix) {
 		if (dbUser.get("xp").value() >= dbUser.get("nextLevelXp").value()) {
 			dbUser.update("level", n => n+1 ).write()
 			var currentNewLevel = dbUser.get("level").value()
-			client.channels.cache.get("734422195203211287").send(`${message.author.username} has reached level **${currentNewLevel}**`)
+			client.channels.cache.get(alias.levelUps).send(`${message.author.username} has reached level **${currentNewLevel}**`)
 
 			addLevelRole(message, currentNewLevel)
 			
