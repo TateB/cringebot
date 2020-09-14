@@ -48,9 +48,7 @@ You will have to populate the values of each field yourself.
 - `customRoleOne/Two` = these are the role ids you can specify for members to receive by reacting to `customRolesAssignMessage`, you can use one, both or neither.
 
 **Tip: if you do not want to use one of the optional values, just put the word `null` as the value, as demonstrated above**
-## Commands
-### !social
-=======
+
 ## the ultimate discord bot of cringe
 main technology used: lowdb, distube (for bot music), discord.js
 
@@ -126,6 +124,6 @@ Currently these types of social media are supported:
 Written by:
 - [Tate B](https://github.com/TateB) 
 - [Sam B](https://github.com/SamBkamp)
-=======
+
 ## !source
 _shows source code for the bot_
