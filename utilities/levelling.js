@@ -1,7 +1,5 @@
 function addLevelRole(message, currentNewLevel) {
-	console.log("attempting to get new role")
 	let newRole = message.guild.roles.cache.find(role => role.name === `level ${currentNewLevel}`)
-	console.log(newRole)
 	if (newRole != undefined) {
 		message.member.roles.add(newRole)
 	}
@@ -10,7 +8,6 @@ function addLevelRole(message, currentNewLevel) {
 function levelsListener(client, db, message, prefix, alias) {
     if (db.get("users").get(message.author).value() == undefined) {
 		var dbUser = db.get("users").get(message.author)
-		console.log("dbuser is undefined")
 		db.get("users")
 		.set(message.author, { "level": 0, "xp": 20, nextLevelXp: 100, msSinceLastXp: 1595223500000, id: message.author.id })
 		.write()
@@ -41,7 +38,6 @@ function levelsListener(client, db, message, prefix, alias) {
 			
 			currentNewLevel = currentNewLevel+1
 			let newXp = 10*(Math.pow(currentNewLevel, 2)) + 50 * currentNewLevel + 100
-			console.log(newXp, currentNewLevel)
 			dbUser.set("nextLevelXp", newXp).write()
 		}
 

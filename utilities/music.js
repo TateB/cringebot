@@ -99,7 +99,6 @@ function updateQueue(db, client, queue, alias) {
             desc += `**${actualIndex}**: [${song.name}](${song.url}) - ${song.formattedDuration} (<@${song.user.id}>)\n`
         })
         
-        console.log(queue.songs.length)
 
         if (currentPage == 1 && totalSongs == 1) {
             client.guilds.cache.get(alias.serverID).channels.cache.get(alias.music).messages.fetch(musicIds.queueUi).then(m => {
