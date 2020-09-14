@@ -5,9 +5,13 @@
 _this bot runs on nodeJS and as such node and npm must all be installed and up to date to proceeed. Git is also required_
 
 **1)** Start by cloning this repository onto your computer with `git clone https://github.com/TateB/cringebot/`
+
 **2)** Navigate to the downloaded folder with `cd cringebot`
+
 **3)** Next, install all relevant dependencies with `npm install`
+
 **4)** Then create your Discord server. Make sure it has a dedicated channel for the following:
+
 - Bot commands
 - level ups
 - music 
