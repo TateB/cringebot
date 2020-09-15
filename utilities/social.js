@@ -1,5 +1,6 @@
 const Discord = require('discord.js')
 const social = require('../commands/social')
+const {prefix, token, alias} = require("../config.json"); //functions arent referenced in index.js so reloading ID aliases from disk
 
 // Create social embed function creates the embed in about-you channel and saves message id 
 function createSocialEmbed(db, message) {
@@ -18,7 +19,7 @@ function createSocialEmbed(db, message) {
             socialEmbed.addField(`${socialProfile}`, `${socialProfiles[socialProfile]}`, true)
         }
     }
-    message.client.channels.cache.get("734348142111096893").send(socialEmbed).then( m => {
+    message.client.channels.cache.get(alias.social).send(socialEmbed).then( m => {
         db.get(`users.${message.author.id}.socials`)
             .set('messageId', m.id)
             .write()
@@ -43,7 +44,7 @@ function updateSocialEmbed(db, message) {
             socialEmbed.addField(`${socialProfile}`, `${socialProfiles[socialProfile]}`, true)
         }
     }
-    message.client.channels.cache.get("734348142111096893").messages.fetch(currentMessageId).then( m => {
+    message.client.channels.cache.get(alias.social).messages.fetch(currentMessageId).then( m => {
         m.edit(socialEmbed)
     })
 }
