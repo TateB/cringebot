@@ -26,21 +26,35 @@ Make sure your server has a baseline role all members will have, should they agr
 This file will contain all the relevant server and connection details, it should look something like this:
 ```javascript
 {
-    "prefix": "!", //what you want the bot's commands to start with
-    "token":"y0ur_b0t5_t0k3n_h3r3",
-    "alias": {
-	"serverID": "01234567890123456",
-	"botCommand":"01234567890123456",
-	"levelUps": "01234567890123456",
-	"music": "01234567890123456",
-	"rules": "01234567890123456",
-	"roles": "01234567890123456", //optional 
-	"rulesAcceptMessage": "01234567890123456",
-	"defaultMemberRole": "01234567890123456",
-	"customRolesAssignMessage": "01234567890123456", //optional
-	"customRoleOne": null, //optional
-	"customRoleTwo": null //optional
-    }
+	"prefix": "!",
+	"token": "tokenHere",
+	"alias": {
+		"serverID": "",
+		"channels": {
+			"botCommands": "",
+			"levelUps": "",
+			"music": "",
+			"rules": "",
+			"roles": ""
+		},
+		"messages": {
+			"rulesAccept": "",
+			"customRoles": ""
+		},
+		"roles": {
+			"member": "",
+			"custom": {
+				"customOne": {
+					"id": "",
+					"emoji": ""
+				}, 
+				"customTwo": {
+					"id": "",
+					"emoji": ""
+				}
+			}
+		}
+	}
 }
 ```
 You will have to populate the values of each field yourself.

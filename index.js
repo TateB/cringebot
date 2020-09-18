@@ -58,7 +58,7 @@ client.on('message', message => {
     const command = args.shift().toLowerCase();
 
     if (!client.commands.has(command)) return;
-    if (message.channel.id != alias.botCommand) return //bot commands
+    if (message.channel.id != alias.channels.botCommands) return //bot commands
     
     try {
 	client.commands.get(command).execute(message, args, db, distube);

@@ -53,7 +53,8 @@ function giveRoles(client, alias) {
 				if (emoji.name == customRole.emoji) {
 					addRole(message, reaction, user, customRole.id)
 				}
-			}	    
+            }
+            break;
         default:
             break;
         }	

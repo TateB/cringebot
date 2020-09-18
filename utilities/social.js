@@ -19,7 +19,7 @@ function createSocialEmbed(db, message) {
             socialEmbed.addField(`${socialProfile}`, `${socialProfiles[socialProfile]}`, true)
         }
     }
-    message.client.channels.cache.get(alias.social).send(socialEmbed).then( m => {
+    message.client.channels.cache.get(alias.channels.socials).send(socialEmbed).then( m => {
         db.get(`users.${message.author.id}.socials`)
             .set('messageId', m.id)
             .write()
@@ -44,7 +44,7 @@ function updateSocialEmbed(db, message) {
             socialEmbed.addField(`${socialProfile}`, `${socialProfiles[socialProfile]}`, true)
         }
     }
-    message.client.channels.cache.get(alias.social).messages.fetch(currentMessageId).then( m => {
+    message.client.channels.cache.get(alias.channels.socials).messages.fetch(currentMessageId).then( m => {
         m.edit(socialEmbed)
     })
 }
