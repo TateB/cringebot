@@ -6,15 +6,15 @@ function addReactions(client, alias) {
     }
 
     //accept or deny rules message - add reacts
-    reactToMessage(client, alias.rules, alias.rulesAcceptMessage, '\uD83D\uDFE9', alias.serverID)
-    reactToMessage(client, alias.rules, alias.rulesAcceptMessage, '\uD83D\uDFE5', alias.serverID)
+    reactToMessage(client, alias.channels.rules, alias.messages.rulesAccept, '\uD83D\uDFE9', alias.serverID)
+    reactToMessage(client, alias.channels.rules, alias.messages.rulesAccept, '\uD83D\uDFE5', alias.serverID)
     
     //custom role 1 & 2 message - add reacts
     //if the optional settings roles and customrolesassign is off ('null') exit 
-    if(alias.roles == null || alias.customRolesAssignMessage == null) return; 
-    reactToMessage(client, alias.roles, alias.customRolesAssignMessage, '1️⃣', alias.serverID)
-    reactToMessage(client, alias.roles, alias.customRolesAssignMessage, '2️⃣', alias.serverID)
-
+    if(alias.roles.custom == null || alias.messages.customRoles == null) return;
+	for (const customRole in alias.roles) {
+		reactToMessage(client, alias.channels.roles, alias.messages.customRoles, customRole.emoji, alias.serverID)
+	} 
 }
 
 function giveRoles(client, alias) {
@@ -33,10 +33,10 @@ function giveRoles(client, alias) {
         if (user.id == client.user.id) return
 
         switch(message.id) {
-        case alias.rulesAcceptMessage:
+        case alias.messages.rulesAccept:
             switch(emoji.name) {
             case '🟩':
-                addRole(message, reaction, user, alias.defaultMemberRole)
+                addRole(message, reaction, user, alias.roles.member)
                 break;
             case '🟥':
                 message.guild.members.fetch(user.id).then(member => {
@@ -48,24 +48,15 @@ function giveRoles(client, alias) {
                 break;
             }
             break;
-        case alias.customRolesAssignMessage:	    
-            switch(emoji.name) {
-            case '1️⃣':
-		if(alias.customRuleOne == null) break;
-                addRole(message, reaction, user, alias.customRuleOne)
-                break;
-            case '2️⃣':
-		if(alias.customRuleTwo == null) break;
-                addRole(message, reaction, user, alias.customRuleTwo)
-                break;
-            default:
-                break;
-            }
-            break;
+        case alias.messages.customRoles:
+			for (const customRole in alias.roles.custom) {
+				if (emoji.name == customRole.emoji) {
+					addRole(message, reaction, user, customRole.id)
+				}
+			}	    
         default:
             break;
-        }
-	
+        }	
     });
 }
 
