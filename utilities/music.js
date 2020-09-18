@@ -26,12 +26,12 @@ function createMusicInterface(db, client, alias) {
         queueEmbed.setDescription('no songs currently in queue')
         queueEmbed.setFooter(`showing 0/0`)
 
-    client.guilds.cache.get(alias.serverID).channels.cache.get(alias.music).send(musicEmbed).then(m => {
+    client.guilds.cache.get(alias.serverID).channels.cache.get(alias.channels.music).send(musicEmbed).then(m => {
         musicDb.get('currentMessageIds')
             .set('musicUi', m.id)
             .write()
     })
-    client.guilds.cache.get(alias.serverID).channels.cache.get(alias.music).send(queueEmbed).then(m => {
+    client.guilds.cache.get(alias.serverID).channels.cache.get(alias.channels.music).send(queueEmbed).then(m => {
         musicDb.get('currentMessageIds')
             .set('queueUi', m.id)
             .write()
@@ -57,7 +57,7 @@ function updateNowPlaying(db, client, distube, song, queue, alias) {
         .setThumbnail(`${queue.songs[0].thumbnail}`)
         .addField("up next", `${upnextSong}`)
 
-    client.guilds.cache.get(alias.serverID).channels.cache.get(alias.music).messages.fetch(musicIds.musicUi).then( m => {
+    client.guilds.cache.get(alias.serverID).channels.cache.get(alias.channels.music).messages.fetch(musicIds.musicUi).then( m => {
         m.edit(musicEmbed)
         m.reactions.removeAll()
         .then(() => m.react('⏸️'))
@@ -101,29 +101,29 @@ function updateQueue(db, client, queue, alias) {
         
 
         if (currentPage == 1 && totalSongs == 1) {
-            client.guilds.cache.get(alias.serverID).channels.cache.get(alias.music).messages.fetch(musicIds.queueUi).then(m => {
+            client.guilds.cache.get(alias.serverID).channels.cache.get(alias.channels.music).messages.fetch(musicIds.queueUi).then(m => {
                 m.reactions.removeAll()
             })
         } else if (queue.songs.length > currentPage*5) {
             if (currentPage == 1) {
-                client.guilds.cache.get(alias.serverID).channels.cache.get(alias.music).messages.fetch(musicIds.queueUi).then(m => {
+                client.guilds.cache.get(alias.serverID).channels.cache.get(alias.channels.music).messages.fetch(musicIds.queueUi).then(m => {
                     m.reactions.removeAll()
                     .then(() => m.react('⬇️'))
                 })
             } else if (totalPages > currentPage) {
-                client.guilds.cache.get(alias.serverID).channels.cache.get(alias.music).messages.fetch(musicIds.queueUi).then(m => {
+                client.guilds.cache.get(alias.serverID).channels.cache.get(alias.channels.music).messages.fetch(musicIds.queueUi).then(m => {
                     m.reactions.removeAll()
                     .then(() => m.react('⬆️'))
                     .then(() => m.react('⬇️'))
                 })
             } else {
-                client.guilds.cache.get(alias.serverID).channels.cache.get(alias.music).messages.fetch(musicIds.queueUi).then(m => {
+                client.guilds.cache.get(alias.serverID).channels.cache.get(alias.channels.music).messages.fetch(musicIds.queueUi).then(m => {
                     m.reactions.removeAll()
                     .then(() => m.react('⬆️'))
                 })
             }
         } else {
-            client.guilds.cache.get(alias.serverID).channels.cache.get(alias.music).messages.fetch(musicIds.queueUi).then(m => {
+            client.guilds.cache.get(alias.serverID).channels.cache.get(alias.channels.music).messages.fetch(musicIds.queueUi).then(m => {
                 m.reactions.removeAll()
                 .then(() => m.react('⬆️'))
             })
@@ -132,7 +132,7 @@ function updateQueue(db, client, queue, alias) {
         queueEmbed.setDescription(desc)
         queueEmbed.setFooter(`showing ${currentPage}/${totalPages}`)
 
-        client.guilds.cache.get(alias.serverID).channels.cache.get(alias.music).messages.fetch(musicIds.queueUi).then(m => {
+        client.guilds.cache.get(alias.serverID).channels.cache.get(alias.channels.music).messages.fetch(musicIds.queueUi).then(m => {
             m.edit(queueEmbed)
         })
     }
@@ -143,7 +143,7 @@ function updateQueue(db, client, queue, alias) {
 }
 
 function clearMusicChannel(client, alias) {
-    client.guilds.cache.get(alias.serverID).channels.cache.get(alias.music).bulkDelete(5, true).catch( err => {
+    client.guilds.cache.get(alias.serverID).channels.cache.get(alias.channels.music).bulkDelete(5, true).catch( err => {
         console.log(`there was an error trying to clear the music channel`)
     })
 }
