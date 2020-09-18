@@ -74,8 +74,8 @@ function updateQueue(db, client, queue, alias) {
     let musicIds = db.get('music.currentMessageIds').value()
     let currentPage = db.get('music.currentPage').value()
     let totalPages = Math.ceil(queue.songs.length / 5)
-    if (currentPage > totalSongs) {
-        db.set("music.currentPage", totalSongs).write()
+    if (currentPage > totalPages) {
+        db.set("music.currentPage", totalPages).write()
     }
 
     const queueEmbed = new Discord.MessageEmbed()
@@ -167,8 +167,7 @@ function distubeReactionListener(db, client, distube) {
                 switch(emoji.name){
                     case '⏸️':
                         distube.pause(reaction.message)
-                        reaction.message.reactions.removeAll()
-                        .then(() => reaction.message.react('▶️'))
+                        .then(() => reaction.message.react('⏯️'))
                         .then(() => reaction.message.react('⏩'))
                         .then(() => reaction.message.react('🛑'))
                         .then(() => reaction.message.react('🔀'))
@@ -178,8 +177,7 @@ function distubeReactionListener(db, client, distube) {
                         break
                     case '▶️':
                         distube.resume(reaction.message)
-                        reaction.message.reactions.removeAll()
-                        .then(() => reaction.message.react('⏸️'))
+                        .then(() => reaction.message.react('⏯️'))
                         .then(() => reaction.message.react('⏩'))
                         .then(() => reaction.message.react('🛑'))
                         .then(() => reaction.message.react('🔀'))
