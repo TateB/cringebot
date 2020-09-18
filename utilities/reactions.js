@@ -1,18 +1,23 @@
-function addReactions(client) {
-    function reactToMessage(client, channelId, messageId, emojiReaction) {
-        client.guilds.cache.get('734343453051453460').channels.cache.get(channelId).messages.fetch(messageId).then( e => 
+function addReactions(client, alias) {
+    function reactToMessage(client, channelId, messageId, emojiReaction, serverID) {
+        client.guilds.cache.get(serverID).channels.cache.get(channelId).messages.fetch(messageId).then( e => 
             e.react(emojiReaction)
         )
     }
 
-    reactToMessage(client, "734346523969585202", "734362546466979881", '\uD83D\uDFE9')
-	reactToMessage(client, "734346523969585202", "734362546466979881", '\uD83D\uDFE5')
-	reactToMessage(client, "734346592873742426", "734365412409737317", '1️⃣')
-	reactToMessage(client, "734346592873742426", "734365412409737317", '2️⃣')
+    //accept or deny rules message - add reacts
+    reactToMessage(client, alias.rules, alias.rulesAcceptMessage, '\uD83D\uDFE9', alias.serverID)
+    reactToMessage(client, alias.rules, alias.rulesAcceptMessage, '\uD83D\uDFE5', alias.serverID)
+    
+    //custom role 1 & 2 message - add reacts
+    //if the optional settings roles and customrolesassign is off ('null') exit 
+    if(alias.roles == null || alias.customRolesAssignMessage == null) return; 
+    reactToMessage(client, alias.roles, alias.customRolesAssignMessage, '1️⃣', alias.serverID)
+    reactToMessage(client, alias.roles, alias.customRolesAssignMessage, '2️⃣', alias.serverID)
 
 }
 
-function giveRoles(client) {
+function giveRoles(client, alias) {
 
     // Actual function for adding roles
     function addRole(message, reaction, user, roleid) {
@@ -28,38 +33,40 @@ function giveRoles(client) {
         if (user.id == client.user.id) return
 
         switch(message.id) {
-            case "734362546466979881":
-                switch(emoji.name) {
-                    case '🟩':
-                        addRole(message, reaction, user, "734356952011767810")
-                        break;
-                    case '🟥':
-                        message.guild.members.fetch(user.id).then(member => {
-                            reaction.users.remove(user.id)
-                            member.kick();
-                        });
-                        break;
-                    default:
-                        break;
-                }
+        case alias.rulesAcceptMessage:
+            switch(emoji.name) {
+            case '🟩':
+                addRole(message, reaction, user, alias.defaultMemberRole)
                 break;
-            case "734365412409737317":
-                switch(emoji.name) {
-                    case '1️⃣':
-                        addRole(message, reaction, user, "734366871092068363")
-                        break;
-                    case '2️⃣':
-                        addRole(message, reaction, user, "734366905317457920")
-                        break;
-                    default:
-                        break;
-                }
+            case '🟥':
+                message.guild.members.fetch(user.id).then(member => {
+                    reaction.users.remove(user.id)
+                    member.kick();
+                });
                 break;
             default:
                 break;
+            }
+            break;
+        case alias.customRolesAssignMessage:	    
+            switch(emoji.name) {
+            case '1️⃣':
+		if(alias.customRuleOne == null) break;
+                addRole(message, reaction, user, alias.customRuleOne)
+                break;
+            case '2️⃣':
+		if(alias.customRuleTwo == null) break;
+                addRole(message, reaction, user, alias.customRuleTwo)
+                break;
+            default:
+                break;
+            }
+            break;
+        default:
+            break;
         }
 	
-});
+    });
 }
 
 

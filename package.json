@@ -12,6 +12,7 @@
     "@discordjs/opus": "^0.3.2",
     "discord.js": "^12.2.0",
     "distube": "^2.1.9",
+    "ffmpeg": "0.0.4",
     "lowdb": "^1.0.0"
   }
 }
