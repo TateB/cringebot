@@ -59,8 +59,7 @@ function updateNowPlaying(db, client, distube, song, queue, alias) {
 
     client.guilds.cache.get(alias.serverID).channels.cache.get(alias.channels.music).messages.fetch(musicIds.musicUi).then( m => {
         m.edit(musicEmbed)
-        m.reactions.removeAll()
-        .then(() => m.react('⏸️'))
+        .then(() => m.react('⏯️'))
         .then(() => m.react('⏩'))
         .then(() => m.react('🛑'))
         .then(() => m.react('🔀'))
@@ -76,6 +75,10 @@ function updateQueue(db, client, queue, alias) {
     let totalPages = Math.ceil(queue.songs.length / 5)
     if (currentPage > totalPages) {
         db.set("music.currentPage", totalPages).write()
+    }
+    if (currentPage == 0) {
+        db.set("music.currentPage", 1).write()
+        currentPage = 1
     }
 
     const queueEmbed = new Discord.MessageEmbed()
@@ -99,8 +102,7 @@ function updateQueue(db, client, queue, alias) {
             desc += `**${actualIndex}**: [${song.name}](${song.url}) - ${song.formattedDuration} (<@${song.user.id}>)\n`
         })
         
-
-        if (currentPage == 1 && totalSongs == 1) {
+        if (currentPage == 1 && queue.songs.length == 1) {
             client.guilds.cache.get(alias.serverID).channels.cache.get(alias.channels.music).messages.fetch(musicIds.queueUi).then(m => {
                 m.reactions.removeAll()
             })
@@ -165,25 +167,12 @@ function distubeReactionListener(db, client, distube) {
         switch(message.id) {
             case musicIds.musicUi:
                 switch(emoji.name){
-                    case '⏸️':
-                        distube.pause(reaction.message)
-                        .then(() => reaction.message.react('⏯️'))
-                        .then(() => reaction.message.react('⏩'))
-                        .then(() => reaction.message.react('🛑'))
-                        .then(() => reaction.message.react('🔀'))
-                        .then(() => reaction.message.react('🔂'))
-                        .then(() => reaction.message.react('🔁'))
-                        .then(() => reaction.message.react('⛔'))
-                        break
-                    case '▶️':
-                        distube.resume(reaction.message)
-                        .then(() => reaction.message.react('⏯️'))
-                        .then(() => reaction.message.react('⏩'))
-                        .then(() => reaction.message.react('🛑'))
-                        .then(() => reaction.message.react('🔀'))
-                        .then(() => reaction.message.react('🔂'))
-                        .then(() => reaction.message.react('🔁'))
-                        .then(() => reaction.message.react('⛔'))
+                    case '⏯️':
+                        if (distube.isPaused(reaction.message)) {
+                            distube.resume(reaction.message)
+                        } else {
+                            distube.pause(reaction.message)
+                        }
                         break
                     case '⏩':
                         distube.skip(reaction.message)
