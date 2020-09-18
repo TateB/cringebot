@@ -2,7 +2,8 @@ const Discord = require('discord.js')
 
 function marriageHandler(message,args,db,type) {
     // Set message author database reference and get relationships
-    let messageAuthorDb = db.get("users").get(message.author).get("relationships")
+    let userDbRef = db.get("users")
+    let messageAuthorDb = userDbRef.get(message.author).get("relationships")
 
     // If requested, clear proposal or show that there is none.
     if(args[0] == "propose" && args[1] == "remove") {
@@ -16,20 +17,25 @@ function marriageHandler(message,args,db,type) {
     }
 
     // Look at mentioned user in database
-    let otherUser = db.get("users").get(message.mentions.users.first().id).get("relationships")
+    let otherUserDiscord = message.mentions.users.first()
+    let otherUser = db.get("users").get(otherUserDiscord.id).get("relationships")
     if (otherUser.value() == undefined) {
-        console.log("setting partner relation status")
-        db.get("users").get(message.mentions.users.first().id).set("relationships", { "proposal" : {"userId": "", "messageId": ""}, "partner": "", "children": [] }).write()
-        console.log(db.get("users").get(message.mentions.users.first().id).get("relationships").value())
+        userDbRef.get(otherUser.id).set("relationships", { "proposal" : {"userId": "", "messageId": ""}, "partner": "", "children": [] }).write()
     }
 
     switch(type) {
         case "propose":
             if(messageAuthorDb.get("proposal.userId").value() == "" && otherUser.get("proposal.userId").value() == "") {
-                console.log("relationchecked")
-                messageAuthorDb.set("proposal.userId", {"userId": message.mentions.users.first().id, "messageId": message.id}).write()
-                message.channel.send(`${message.mentions.users.first()}, ${message.author} has proposed to you!`)
+                messageAuthorDb.set("proposal.userId", {"userId": otherUserDiscord.id, "messageId": message.id}).write()
+                message.channel.send(`${otherUserDiscord}, ${message.author} has proposed to you!`)
+            } else if (otherUser.get("proposal.userId").value() != "") {
+                message.channel.send(`${otherUserDiscord} is already married!`)
+            } else if (messageAuthorDb.get("proposal.userId").value() != "") {
+                message.channel.send(`${message.author}, you're already married!`)
             }
+            break
+        case "divorce":
+            break
     }
 }
 
