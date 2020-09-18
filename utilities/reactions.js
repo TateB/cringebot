@@ -12,8 +12,9 @@ function addReactions(client, alias) {
     //custom role 1 & 2 message - add reacts
     //if the optional settings roles and customrolesassign is off ('null') exit 
     if(alias.roles.custom == null || alias.messages.customRoles == null) return;
-	for (const customRole in alias.roles) {
-		reactToMessage(client, alias.channels.roles, alias.messages.customRoles, customRole.emoji, alias.serverID)
+	for (const customRole in alias.roles.custom) {
+        let finalCustomRole = alias.roles.custom[customRole]
+		reactToMessage(client, alias.channels.roles, alias.messages.customRoles, finalCustomRole.emoji, alias.serverID)
 	} 
 }
 
@@ -50,8 +51,8 @@ function giveRoles(client, alias) {
             break;
         case alias.messages.customRoles:
 			for (const customRole in alias.roles.custom) {
-				if (emoji.name == customRole.emoji) {
-					addRole(message, reaction, user, customRole.id)
+				if (emoji.name == alias.roles.custom[customRole].emoji) {
+					addRole(message, reaction, user, alias.roles.custom[customRole].id)
 				}
             }
             break;
