@@ -19,15 +19,22 @@ function marriageHandler(message,args,db,type) {
     // Look at mentioned user in database
     let otherUserDiscord = message.mentions.users.first()
     let otherUser = db.get("users").get(otherUserDiscord.id).get("relationships")
+    // If mentioned user doesn't have relationship data already, make it.
     if (otherUser.value() == undefined) {
-        userDbRef.get(otherUser.id).set("relationships", { "proposal" : {"userId": "", "messageId": ""}, "partner": "", "children": [] }).write()
+        userDbRef.get(otherUser.id).set("relationships", { "proposal" : {"userId": "", "messageId": ""}, "partner": "", "children": [], "parent": "" }).write()
     }
 
+    // Switch for marriage type command
     switch(type) {
         case "propose":
             if(messageAuthorDb.get("proposal.userId").value() == "" && otherUser.get("proposal.userId").value() == "") {
-                messageAuthorDb.set("proposal.userId", {"userId": otherUserDiscord.id, "messageId": message.id}).write()
+                messageAuthorDb.set("proposal", {"userId": otherUserDiscord.id, "messageId": message.id}).write()
                 message.channel.send(`${otherUserDiscord}, ${message.author} has proposed to you!`)
+                    .then(m => {
+                    m.react("✅")
+                    .then(() => 
+                    m.react("⛔"))
+                })
             } else if (otherUser.get("proposal.userId").value() != "") {
                 message.channel.send(`${otherUserDiscord} is already married!`)
             } else if (messageAuthorDb.get("proposal.userId").value() != "") {
@@ -47,10 +54,21 @@ function marriageDataFetch(message,args,db,type) {
 
 }
 
+function marriageListener(db, client) {
+    client.on('messageReactionAdd', (reaction, user) => {
+        for (const prop in db.get('users')
+            .map('relationships')
+            .find('proposal.userId')
+            .value()) {
+                console.log(prop)
+            }
+    })
+}
+
 function commandHandler(message, args, db) {
     if(db.get("users").get(message.author).get("relationships").value() == undefined) {
         console.log("defining user relationship statuses")
-        db.get("users").get(message.author).set("relationships", { "proposal" : {"userId": "", "messageId": ""}, "partner": "", "children": [] }).write()
+        db.get("users").get(message.author).set("relationships", { "proposal" : {"userId": "", "messageId": ""}, "partner": "", "children": [], "parent": "" }).write()
     }
 
     switch(args[0]) {
@@ -89,5 +107,6 @@ function commandHandler(message, args, db) {
 }
 
 module.exports = {
-    commandHandler
+    commandHandler,
+    marriageListener
 }

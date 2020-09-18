@@ -17,6 +17,7 @@ const distube = new DisTube(client, { searchSongs: true, emitNewSongOnly: true }
 const reactions = require('./utilities/reactions.js')
 const levelling = require('./utilities/levelling.js')
 const music = require('./utilities/music.js')
+const marriage = require('./utilities/marriage.js')
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
@@ -29,6 +30,9 @@ client.once('ready', () => {
 
 	// Music utility action
     music.initialiseMusicInterface(db, client, alias)
+
+    // Marriage utility action
+    marriage.marriageListener(db, client)
 });
 
 for (const file of commandFiles) {
