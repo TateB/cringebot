@@ -58,12 +58,11 @@ This file will contain all the relevant server and connection details, it should
 }
 ```
 You will have to populate the values of each field yourself.
-- `serverID` = the id of your discord server, you can get this by right clicking the server icon and clicking 
-"Copy ID"
-- `botCommand` - roles = These correspond to the ID of the listed text channels. You can also get these by right clicking the channel name and clicking "Copy ID". _Note that you do not need individual channels for each, you can put them all in the same channel if you wish. However #music needs to be a separate, standalone channel._
-- `rulesAcceptMessage` and `customRolesAssignMessage` = These are the messages that the bot will then attach reacts to. The messages have to be in the rules and roles channel respectively.
-- `defaultMemberRole` = this is the default role that all members of the server will receive upon accepting the rules (by reacting to `rulesAcceptMessage`)
-- `customRoleOne/Two` = these are the role ids you can specify for members to receive by reacting to `customRolesAssignMessage`, you can use one, both or neither.
+- `serverID` - the id of your discord server, you can get this by right clicking the server icon and clicking "Copy ID"
+- `channels` - These correspond to the ID of the listed text channels. You can also get these by right clicking the channel name and clicking "Copy ID". _Note that you do not need individual channels for each, you can put them all in the same channel if you wish. However #music needs to be a separate, standalone channel._
+- `messages` - These are the messages that the bot will then attach reacts to. The messages have to be in the rules and roles channel respectively.
+- `roles.member` = this is the default role that all members of the server will receive upon accepting the rules (by reacting to `rulesAcceptMessage`)
+- `custom` = these are the role ids and emojis you can specify for members to receive by reacting to `messages.customRoles`, you have infinite customisability and can add as many roles as you want to this, not just the amount that are listed.
 
 **Tip: if you do not want to use one of the optional values, just put the word `null` as the value, as demonstrated above**
 
