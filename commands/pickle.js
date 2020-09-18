@@ -2,9 +2,9 @@ var crypto = require('crypto');
 
 
 module.exports = {
-    name: "penis",
+    name: "pickle",
     description: "tells you your penis size",
-    usage: "!penis",
+    usage: "!pickle",
     execute(message, args){
 	if(message.author.id == "179447175812612096"){
 	    message.channel.send("Holy shit <@179447175812612096>, I don't have a long enough ruler for you");
