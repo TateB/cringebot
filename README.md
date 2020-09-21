@@ -51,7 +51,17 @@ This file will contain all the relevant server and connection details, it should
 				"customTwo": {
 					"id": "",
 					"emoji": ""
-				}
+				},
+	                 "pronouns": {
+		                "he": "",
+		                "him": "",
+                  		"she": "",
+	                 	"her": "",
+		                "they": "",
+                		"them": "",
+	                   	"any": "",
+	                       	"all": ""
+	                       	
 			}
 		}
 	}
@@ -63,6 +73,7 @@ You will have to populate the values of each field yourself.
 - `messages` - These are the messages that the bot will then attach reacts to. The messages have to be in the rules and roles channel respectively.
 - `roles.member` = this is the default role that all members of the server will receive upon accepting the rules (by reacting to `rulesAcceptMessage`)
 - `custom` = these are the role ids and emojis you can specify for members to receive by reacting to `messages.customRoles`, you have infinite customisability and can add as many roles as you want to this, not just the amount that are listed.
+- `pronouns` = These are the role IDs used for the pronouns of each member. These are not optional
 
 **Tip: if you do not want to use one of the optional values, just put the word `null` as the value, as demonstrated above**
 
