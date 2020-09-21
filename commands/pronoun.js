@@ -27,19 +27,15 @@ module.exports = {
 		var pronouns = args[0].split("/"); //splits the pronouns into subjective and objective
 		//eg: it may look like: [he, him]
 		
-		// Loop through input pronouns, if exists in object, add it to array to user. If there isn't two pronouns at the end, reply with other message.
-		var pronounsToAdd = []
-		for (inputPronounNumber in pronouns) {
-			let inputPronoun = pronouns[inputPronounNumber]
-			if (pronounObject[inputPronoun]) {
-				pronounsToAdd.push(pronounObject[inputPronoun])
-			}
-		}
+		// Set pronouns, if one is undefined, throw error.
+		var pronounsToAdd = [pronounObject[pronouns[0]], pronounObject[pronouns[1]]]
 
-		if (pronounsToAdd.length != 2) {
+		if (pronounsToAdd[0] == undefined || pronounsToAdd[1] == undefined) {
 			message.reply("Sorry, we don't have those pronouns hardcoded. If you think it should be, you can submit an issue at https://github.com/TateB/cringebot/issues/new")
 		} else {
-			message.member.roles.add(pronounsToAdd)
+			message.member.roles.remove(Object.values(pronounObject)).then(m => {
+				message.member.roles.add(pronounsToAdd)
+			})
 			message.reply("Done!")
 		}
 
